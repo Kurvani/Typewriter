@@ -20,9 +20,41 @@ TypeWriter.prototype.type = function() {
   // Get the full text of the current word
   const fullTxt = this.words[current];
 
-  console.log(fullTxt);
+  // Check if in the Deleting state
+  if (this.isDeleting) {
+    // Remove a character
+    this.txt = fullTxt.substring(0, this.txt.length - 1);
+  } else {
+    // Add a character
+    this.txt = fullTxt.substring(0, this.txt.length + 1);
+  }
 
-  setTimeout(() => this.type(), 500);
+  // Insert txt into element
+  this.txtElement.innerHTML = `<span class="txt">${this.txt}</span>`; // We could concatenate but we're goign to use ES6 so we use backticks so we can use a template literal.
+
+  // Initial Type Speed
+  let typeSpeed = 300;
+
+  if (this.isDeleting) {
+    typeSpeed /= 2; //divide by 2
+  }
+
+  // Check to see if the word is complete
+  if (!this.isDeleting && this.txt === fullTxt) {
+    // Make pause at end of typing out word
+    typeSpeed = this.wait;
+    // Set delete to true
+    this.isDeleting = true;
+  } else if (this.isDeleting && this.txt === "") {
+    //This point is when a word is fully deleted
+    this.isDeleting = false;
+    // Move to next word
+    this.wordIndex++;
+    // Pause before typing again
+    typeSpeed = 500;
+  }
+
+  setTimeout(() => this.type(), typeSpeed);
 };
 
 // Init On DOM Load

@@ -38,6 +38,11 @@ h2 {
   }
 }
 
+/* cursor */
+.txt-type > .txt {
+  border-right: 0.2rem solid #777;
+}
+
 @media (min-width: 800px) {
   /*this will be anythign about 800px*/
   .container {
